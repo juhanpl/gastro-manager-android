@@ -1,0 +1,6 @@
+@GswSupplies_WebAPI_HostAddress = http://localhost:5211
+
+GET {{GswSupplies_WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

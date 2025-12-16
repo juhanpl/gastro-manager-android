@@ -16,7 +16,9 @@ import com.example.dishmanager.models.Dish
 
 data class Item(val like: Boolean)
 
-class DishAdapter(private val context: Context, private var dishes: List<Dish>) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
+class DishAdapter(private val context: Context,
+                  private var dishes: List<Dish>,
+                  public var onItemClick: (() -> Unit)? = null) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
     private val likeStorage = LikeStorage(context = context)
 
@@ -38,6 +40,12 @@ class DishAdapter(private val context: Context, private var dishes: List<Dish>) 
 
     override fun getItemCount(): Int {
         return dishes.size
+    }
+
+    fun getItems(): List<Dish> {
+
+        return dishes
+
     }
 
     fun updateData(newDishes: List<Dish>) {
@@ -95,8 +103,10 @@ class DishAdapter(private val context: Context, private var dishes: List<Dish>) 
                     likeStorage.addLikedItem(dish)
                 } else {
                     likeStorage.removeLikedItem(dish)
+                    onItemClick?.invoke()
                 }
                 updateIcon()
+                notifyItemChanged(position)
 
             }
 

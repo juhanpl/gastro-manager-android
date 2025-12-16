@@ -1,6 +1,7 @@
 package com.example.dishmanager
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -32,13 +33,35 @@ class MainActivity : AppCompatActivity() {
         val dishRepository = DishRepository()
         val categoryRepository = CategoryRepository()
 
+        val txtSearch = findViewById<EditText>(R.id.txtSearch)
+        val spinner = findViewById<Spinner>(R.id.cbCategory)
+
+
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = DishAdapter(this, emptyList())
+        val adapter = DishAdapter(this, emptyList(), null)
+
+        fun verifyFavorites() {
+
+            val selectedCategory = spinner.selectedItem.toString()
+
+            if (selectedCategory == "Favorite") {
+
+                adapter.getLikedDishes()
+
+            }
+
+
+        }
+
+        adapter.onItemClick = ::verifyFavorites
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val txtSearch = findViewById<EditText>(R.id.txtSearch)
-        val spinner = findViewById<Spinner>(R.id.cbCategory)
+
+
+
 
 
         lifecycleScope.launch {
@@ -51,9 +74,8 @@ class MainActivity : AppCompatActivity() {
                 )
             spinner.adapter = spinnerAdapter
 
-            val newDishes = dishRepository.getDishes()
-            dishes = newDishes
-            adapter.updateData(newDishes)
+            dishes = dishRepository.getDishes()
+            adapter.updateData(dishes)
 
         }
 
@@ -64,6 +86,7 @@ class MainActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
+
                 val selectedCategory = parent.getItemAtPosition(position) as String
 
                 if (selectedCategory == "Select...") {
@@ -77,10 +100,12 @@ class MainActivity : AppCompatActivity() {
 
                 } else {
 
-                    val searchedByCategoryDishes = dishes.filter { dish -> dish.category == selectedCategory }
-                    adapter.updateData(searchedByCategoryDishes)
+                    val searchedCategory = dishes.filter { dish -> dish.category == selectedCategory}
+                    adapter.updateData(searchedCategory)
 
                 }
+
+
 
 
             }
@@ -92,11 +117,35 @@ class MainActivity : AppCompatActivity() {
 
         txtSearch.doOnTextChanged { text, start, before, count ->
 
-            val searchedByNameDishes = dishes.filter { dish -> dish.dishName.contains(text.toString(), ignoreCase = true) }
-            adapter.updateData(searchedByNameDishes)
+            val selectedCategory = spinner.selectedItem.toString()
+
+            if (selectedCategory == "Select...") {
+
+                val searchedDishes = dishes.filter { dish -> dish.dishName.contains(text.toString(), ignoreCase = true)}
+                adapter.updateData(searchedDishes)
+
+
+            } else if (selectedCategory == "Favorite") {
+
+                adapter.getLikedDishes()
+                val favorites = adapter.getItems()
+                val searchedDishes = favorites.filter { dish -> dish.dishName.contains(text.toString(), ignoreCase = true)}
+                adapter.updateData(searchedDishes)
+
+
+            } else {
+
+                val searchedCategory = dishes.filter { dish -> dish.category == selectedCategory && dish.dishName.contains(text.toString(), ignoreCase = true)}
+                adapter.updateData(searchedCategory)
+
+            }
+
 
 
         }
 
+
     }
+
+
 }

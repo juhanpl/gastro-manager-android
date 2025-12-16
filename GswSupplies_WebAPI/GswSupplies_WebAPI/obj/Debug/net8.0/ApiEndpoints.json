@@ -1,0 +1,22 @@
+[
+  {
+    "ContainingType": "GswSupplies_WebAPI.Controllers.CategoriesController",
+    "Method": "Get",
+    "RelativePath": "api/categories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GswSupplies_WebAPI.Controllers.DishController",
+    "Method": "Get",
+    "RelativePath": "api/dishes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]
