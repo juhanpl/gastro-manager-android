@@ -32,7 +32,7 @@ git clone https://github.com/juhanpl/gastro-manager-android.git
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Language:** Kotlin
 - **Platform:** Android SDK (Minimum API 24+)
