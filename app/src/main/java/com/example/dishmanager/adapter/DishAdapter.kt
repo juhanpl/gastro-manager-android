@@ -1,6 +1,7 @@
 package com.example.dishmanager.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,14 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dishmanager.DishActivity
 import com.example.dishmanager.repository.LikeRepository
 import com.example.dishmanager.R
 import com.example.dishmanager.models.Dish
 import com.google.android.material.button.MaterialButton
+import org.json.JSONObject
 
 data class Item(val like: Boolean)
 
@@ -27,7 +31,12 @@ class DishAdapter(private val context: Context,
         parent: ViewGroup,
         viewType: Int
     ): DishViewHolder {
-        val inflate = LayoutInflater.from(parent.context).inflate(R.layout.dish_item, parent, false)
+        val inflate = LayoutInflater
+                        .from(parent.context)
+                        .inflate(R.layout.dish_item,
+                            parent,
+                            false
+                        )
         return DishViewHolder(inflate)
     }
 
@@ -35,7 +44,6 @@ class DishAdapter(private val context: Context,
         holder: DishViewHolder,
         position: Int
     ) {
-
         holder.bind(dishes[position])
     }
 
@@ -44,23 +52,17 @@ class DishAdapter(private val context: Context,
     }
 
     fun getItems(): List<Dish> {
-
         return dishes
-
     }
 
     fun updateData(newDishes: List<Dish>) {
-
         dishes = newDishes
         notifyDataSetChanged()
-
     }
 
     fun getLikedDishes() {
-
         dishes = likeRepository.getLikedItems()
         notifyDataSetChanged()
-
     }
 
     inner class DishViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -73,12 +75,14 @@ class DishAdapter(private val context: Context,
 
         fun bind(dish: Dish) {
 
-            dish.like = likeRepository.getLikedItems().any { likedDish -> likedDish.dishId == dish.dishId }
+            dish.like = likeRepository.getLikedItems().any { likedDish ->
+                likedDish.dishId == dish.dishId
+            }
 
             txtTitleDish.text = dish.dishName
             txtFinalPrice.text = "Final Price: " + dish.finalPriceForClients + " $"
 
-            //Load Image
+            //load Image
             val assetManager = itemView.context.assets
             val inputStream = assetManager.open(dish.imagePath)
             val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -109,6 +113,28 @@ class DishAdapter(private val context: Context,
                 }
                 updateIcon()
                 notifyItemChanged(position)
+
+            }
+
+            btnMore.setOnClickListener {
+
+                val jsonObj = JSONObject().apply {
+
+                    put("dishId", dish.dishId)
+                    put("dishName", dish.dishName)
+                    put("description", dish.description)
+                    put("category", dish.category)
+                    put("imagePath", dish.imagePath)
+                    put("ingredients", dish.ingredients)
+                    put("cookingTime", dish.cookingTime)
+                    put("finalPriceForClients", dish.finalPriceForClients)
+                    put("like", dish.like)
+
+                }
+
+                val intent = Intent(context, DishActivity::class.java)
+                intent.putExtra("json", jsonObj.toString())
+                context.startActivity(intent)
 
             }
 

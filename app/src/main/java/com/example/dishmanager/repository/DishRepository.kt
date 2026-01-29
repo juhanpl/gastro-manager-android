@@ -6,6 +6,7 @@ import com.example.dishmanager.models.Dish
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -32,6 +33,7 @@ class DishRepository(val context: Context) {
                 description = jsonObject.getString("description"),
                 imagePath = jsonObject.getString("imagePath"),
                 ingredients = jsonObject.getString("ingredients"),
+                cookingTime = jsonObject.getString("cookingTime"),
                 finalPriceForClients = jsonObject.getDouble("finalPriceForClients")
             )
 
@@ -40,6 +42,25 @@ class DishRepository(val context: Context) {
         }
 
         return dishes
+
+    }
+
+    fun JsonToDish(json: String): Dish {
+
+        val jsonObject = JSONObject(json)
+
+        val dish = Dish(
+            dishId = jsonObject.getInt("dishId"),
+            dishName = jsonObject.getString("dishName"),
+            category = jsonObject.getString("category"),
+            description = jsonObject.getString("description"),
+            imagePath = jsonObject.getString("imagePath"),
+            ingredients = jsonObject.getString("ingredients"),
+            cookingTime = jsonObject.getString("cookingTime"),
+            finalPriceForClients = jsonObject.getDouble("finalPriceForClients")
+        )
+
+        return dish
 
     }
 

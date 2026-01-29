@@ -9,6 +9,7 @@ data class Dish(
     val finalPriceForClients: Double,
     val description: String,
     val ingredients: String,
+    val cookingTime: String,
     var like: Boolean = false
 
 )
