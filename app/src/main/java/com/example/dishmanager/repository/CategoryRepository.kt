@@ -12,7 +12,7 @@ import java.net.URL
 
 class CategoryRepository(val context: Context) {
 
-    private val fileName = "categories"
+    private val fileName = "categories.json"
     private val jsonArray = AssetRepository(context).getJsonFromAssets(fileName)
 
 

@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity() {
                 R.layout.item_spinner,
                 categories
                 )
-            spinner.setAdapter(spinnerAdapter)
             spinner.setText("All", false)
+            spinner.setAdapter(spinnerAdapter)
 
             dishes = dishRepository.getDishes()
             adapter.updateData(dishes)
@@ -78,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         spinner.setOnItemClickListener { parent, _, position, _ ->
+
+            txtSearch.setText("")
 
             val selectedCategory = spinner.adapter.getItem(position).toString()
             spinner.setText(selectedCategory, false)
