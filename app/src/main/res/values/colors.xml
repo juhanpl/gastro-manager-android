@@ -8,5 +8,5 @@
     <color name="cardButton">#878787</color>
     <color name="textButton">#49454F</color>
     <color name="textCardColor">#FFFFFF</color>
-    <color name="backgroundColor"></color>
+    <color name="textDishName">#474747</color>
 </resources>

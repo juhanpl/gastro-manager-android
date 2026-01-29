@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dishmanager.repository.LikeRepository
 import com.example.dishmanager.R
 import com.example.dishmanager.models.Dish
+import com.google.android.material.button.MaterialButton
 
 data class Item(val like: Boolean)
 
 class DishAdapter(private val context: Context,
                   private var dishes: List<Dish>,
-                  public var onItemClick: (() -> Unit)? = null) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
+                  public var onItemClick: (() -> Unit)? = null)
+    : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
     private val likeRepository = LikeRepository(context = context)
 
@@ -67,6 +69,7 @@ class DishAdapter(private val context: Context,
         private val imgDish = view.findViewById<ImageView>(R.id.imgDish)
         private val txtFinalPrice = view.findViewById<TextView>(R.id.txtFinalPrice)
         private val btnFavorite = view.findViewById<ImageButton>(R.id.btnFavorite)
+        private val btnMore = view.findViewById<MaterialButton>(R.id.btnMore)
 
         fun bind(dish: Dish) {
 
@@ -94,7 +97,7 @@ class DishAdapter(private val context: Context,
 
             }
 
-            val btnHeart = btnFavorite.setOnClickListener {
+            btnFavorite.setOnClickListener {
 
                 dish.like = !dish.like
 

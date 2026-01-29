@@ -20,6 +20,7 @@ class LikeRepository(private val context: Context) {
             put("description", dish.description)
             put("category", dish.category)
             put("imagePath", dish.imagePath)
+            put("ingredients", dish.ingredients)
             put("finalPriceForClients", dish.finalPriceForClients)
             put("like", dish.like)
 
@@ -72,6 +73,7 @@ class LikeRepository(private val context: Context) {
                 description = jsonObj.optString("description", "No description available"),
                 imagePath = jsonObj.getString("imagePath"),
                 finalPriceForClients = jsonObj.getDouble("finalPriceForClients"),
+                ingredients = jsonObj.optString("ingredients", "No ingredients available"),
                 like = jsonObj.getBoolean("like")
             )
 
