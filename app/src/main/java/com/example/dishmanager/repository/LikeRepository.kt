@@ -17,10 +17,12 @@ class LikeRepository(private val context: Context) {
 
             put("dishId", dish.dishId)
             put("dishName", dish.dishName)
+            put("description", dish.description)
             put("category", dish.category)
             put("imagePath", dish.imagePath)
             put("finalPriceForClients", dish.finalPriceForClients)
             put("like", dish.like)
+
         }
 
         jsonArray.put(jsonObj)
@@ -67,6 +69,7 @@ class LikeRepository(private val context: Context) {
                 dishId = jsonObj.getInt("dishId"),
                 dishName = jsonObj.getString("dishName"),
                 category = jsonObj.getString("category"),
+                description = jsonObj.optString("description", "No description available"),
                 imagePath = jsonObj.getString("imagePath"),
                 finalPriceForClients = jsonObj.getDouble("finalPriceForClients"),
                 like = jsonObj.getBoolean("like")

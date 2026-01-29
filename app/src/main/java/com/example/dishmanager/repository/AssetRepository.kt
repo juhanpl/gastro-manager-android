@@ -21,9 +21,6 @@ class AssetRepository(val context: Context) {
 
         } catch(e: Exception) {
 
-            val listAssets = context.assets.list("") // Lista todo lo que hay en assets
-            Log.d("DEBUG_ASSETS", "Archivos encontrados: ${listAssets?.joinToString()}")
-
             JSONArray()
 
         }

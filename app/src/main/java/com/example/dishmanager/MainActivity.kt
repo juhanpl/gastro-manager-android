@@ -33,71 +33,124 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var dishes: List<Dish> = emptyList()
+        //init repository
         val dishRepository = DishRepository(this)
         val categoryRepository = CategoryRepository(this)
 
+        //load dishes
+        var dishes: List<Dish> = dishRepository.getDishes()
+
+        //set components
         val txtSearch = findViewById<TextInputEditText>(R.id.txtSearch)
         val spinner = findViewById<AutoCompleteTextView>(R.id.cbCategory)
-
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val adapter = DishAdapter(this, emptyList(), null)
 
-        fun verifyFavorites() {
+        fun configSpinner() {
 
-            val selectedCategory = spinner.text.toString()
-            if (selectedCategory == "Favorite") {
-                adapter.getLikedDishes()
-            }
+            val categories = categoryRepository.getCategories()
+
+            //set adapter to spinner
+            spinner.setAdapter(
+                ArrayAdapter(
+                    this@MainActivity,
+                    R.layout.item_spinner,
+                    categories
+                )
+            )
+            //set first item as selected
+            spinner.setText(categories[0], false)
+            //set style to the dropdown
+            spinner.setDropDownBackgroundDrawable(
+                ContextCompat.getDrawable(this, R.drawable.dropdown_background)
+            )
 
         }
 
-        adapter.onItemClick = ::verifyFavorites
+        fun configRecyclerView() {
 
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+            //load the favorites dishes
+            fun refreshFavoritesIfSelected() {
+                val selectedCategory = spinner.text.toString()
+                if (selectedCategory == "Favorite") {
+                    adapter.getLikedDishes()
+                }
+            }
+            adapter.onItemClick = ::refreshFavoritesIfSelected
 
-        spinner.setDropDownBackgroundDrawable(
-            ContextCompat.getDrawable(this, R.drawable.dropdown_background)
-        )
+            //config recyclerview
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(this)
 
-        lifecycleScope.launch {
-
-            val categories = categoryRepository.getCategories()
-            val spinnerAdapter = ArrayAdapter(
-                this@MainActivity,
-                R.layout.item_spinner,
-                categories
-                )
-            spinner.setText("All", false)
-            spinner.setAdapter(spinnerAdapter)
-
-            dishes = dishRepository.getDishes()
+            //update recyclerview data
             adapter.updateData(dishes)
+
+        }
+
+        configSpinner()
+        configRecyclerView()
+
+        fun getDishesFromCategory(category: String) {
+
+            val searchedCategory = when(category) {
+
+                "All" -> dishes
+                "Favorites" -> adapter.getItems()
+                else -> dishes.filter { dish ->
+                    dish.category == category
+                }
+
+            }
+
+            adapter.updateData(searchedCategory)
 
         }
 
         spinner.setOnItemClickListener { parent, _, position, _ ->
 
+            //clear search field
             txtSearch.setText("")
 
             val selectedCategory = spinner.adapter.getItem(position).toString()
             spinner.setText(selectedCategory, false)
 
-            if (selectedCategory == "All") {
+            getDishesFromCategory(selectedCategory)
 
-                adapter.updateData(dishes)
+        }
 
-            } else if (selectedCategory == "Favorite") {
+        fun getSearchedDishes(category: String, searchedValue: String) {
 
-                adapter.getLikedDishes()
+            val searchedDishes = when(category) {
 
-            } else {
-
-                val searchedCategory = dishes.filter { dish -> dish.category == selectedCategory}
-                adapter.updateData(searchedCategory)
+                "All" -> {
+                    dishes.filter { dish ->
+                        dish.dishName.contains(
+                            searchedValue,
+                            ignoreCase = true
+                        )
+                    }
+                }
+                "Favorite" -> {
+                    adapter.getLikedDishes()
+                    adapter.getItems().filter { dish ->
+                        dish.dishName.contains(
+                            searchedValue,
+                            ignoreCase = true
+                        )
+                    }
+                }
+                else -> {
+                    dishes.filter { dish ->
+                        dish.category == category && dish.dishName.contains(
+                            searchedValue,
+                            ignoreCase = true
+                        )
+                    }
+                }
 
             }
+
+            adapter.updateData(searchedDishes)
 
         }
 
@@ -105,26 +158,7 @@ class MainActivity : AppCompatActivity() {
 
             val selectedCategory = spinner.text.toString()
 
-            if (selectedCategory == "All") {
-
-                val searchedDishes = dishes.filter { dish -> dish.dishName.contains(text.toString(), ignoreCase = true)}
-                adapter.updateData(searchedDishes)
-
-
-            } else if (selectedCategory == "Favorite") {
-
-                adapter.getLikedDishes()
-                val favorites = adapter.getItems()
-                val searchedDishes = favorites.filter { dish -> dish.dishName.contains(text.toString(), ignoreCase = true)}
-                adapter.updateData(searchedDishes)
-
-
-            } else {
-
-                val searchedCategory = dishes.filter { dish -> dish.category == selectedCategory && dish.dishName.contains(text.toString(), ignoreCase = true)}
-                adapter.updateData(searchedCategory)
-
-            }
+            getSearchedDishes(selectedCategory, text.toString())
 
         }
 

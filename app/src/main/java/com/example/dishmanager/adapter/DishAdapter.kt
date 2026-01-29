@@ -111,8 +111,8 @@ class DishAdapter(private val context: Context,
 
             updateIcon()
 
-
         }
 
     }
+
 }

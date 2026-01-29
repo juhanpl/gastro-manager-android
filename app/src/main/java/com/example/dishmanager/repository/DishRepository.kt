@@ -29,6 +29,7 @@ class DishRepository(val context: Context) {
                 dishId = jsonObject.getInt("dishId"),
                 dishName = jsonObject.getString("dishName"),
                 category = jsonObject.getString("category"),
+                description = jsonObject.getString("description"),
                 imagePath = jsonObject.getString("imagePath"),
                 finalPriceForClients = jsonObject.getDouble("finalPriceForClients")
             )

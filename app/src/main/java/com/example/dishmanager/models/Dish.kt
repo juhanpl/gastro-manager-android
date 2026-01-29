@@ -7,6 +7,7 @@ data class Dish(
     val category: String,
     val imagePath: String,
     val finalPriceForClients: Double,
+    val description: String,
     var like: Boolean = false
 
 )
