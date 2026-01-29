@@ -5,14 +5,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     tools:context=".MainActivity">
+
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSearch"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:cardBackgroundColor="@color/cardItemContainer"
+        android:layout_height="200dp"
+        app:strokeColor="@color/textButton"
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="@color/cardColor"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -20,26 +23,106 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center">
 
-            <EditText
-                android:id="@+id/txtSearch"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:hint="Search"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                android:layout_marginEnd="60dp"
-                android:autofillHints="name"
-                android:inputType="text"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/restaurant_svgrepo_com"
+                android:scaleType="centerInside" />
 
-            <Spinner
-                android:id="@+id/cbCategory"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/textButton"
+                    android:layout_marginEnd="30dp"
+                    app:cardCornerRadius="6dp"
+                    android:backgroundTint="@color/white"
+                    app:cardElevation="0dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txtSearchLayout"
+                        app:startIconTint="@color/cardColor"
+                        app:startIconDrawable="@drawable/zoom_svgrepo_com"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        app:startIconMinSize="40dp"
+                        app:hintEnabled="false"
+                        app:boxBackgroundMode="none">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Search"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="0dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:background="@android:color/transparent"
+                        android:inputType="text"
+                        android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="155dp"
+                    android:layout_height="30dp"
+                    android:hint=""
+                    app:boxBackgroundMode="filled"
+                    app:boxCornerRadiusBottomEnd="6dp"
+                    app:boxCornerRadiusBottomStart="6dp"
+                    app:boxCornerRadiusTopEnd="6dp"
+                    app:boxCornerRadiusTopStart="6dp"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/textButton"
+                    app:boxStrokeWidth="1dp"
+                    android:gravity="center_vertical"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    >
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/cbCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textStyle="bold"
+                        android:focusable="false"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="0dp"
+                        android:paddingStart="8dp"
+                        android:textSize="14sp"
+                        android:hint="" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
+
+
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -47,6 +130,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
+        app:strokeWidth="3dp"
+        android:layout_margin="20dp"
+        app:strokeColor="@color/cardColor"
         app:cardBackgroundColor="@color/cardItemContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +141,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

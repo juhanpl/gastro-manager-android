@@ -2,7 +2,6 @@ package com.example.dishmanager.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dishmanager.LikeStorage
+import com.example.dishmanager.repository.LikeRepository
 import com.example.dishmanager.R
 import com.example.dishmanager.models.Dish
 
@@ -20,7 +19,7 @@ class DishAdapter(private val context: Context,
                   private var dishes: List<Dish>,
                   public var onItemClick: (() -> Unit)? = null) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
-    private val likeStorage = LikeStorage(context = context)
+    private val likeRepository = LikeRepository(context = context)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -57,7 +56,7 @@ class DishAdapter(private val context: Context,
 
     fun getLikedDishes() {
 
-        dishes = likeStorage.getLikedItems()
+        dishes = likeRepository.getLikedItems()
         notifyDataSetChanged()
 
     }
@@ -71,7 +70,7 @@ class DishAdapter(private val context: Context,
 
         fun bind(dish: Dish) {
 
-            dish.like = likeStorage.getLikedItems().any { likedDish -> likedDish.dishId == dish.dishId }
+            dish.like = likeRepository.getLikedItems().any { likedDish -> likedDish.dishId == dish.dishId }
 
             txtTitleDish.text = dish.dishName
             txtFinalPrice.text = "Final Price: " + dish.finalPriceForClients + " $"
@@ -100,9 +99,9 @@ class DishAdapter(private val context: Context,
                 dish.like = !dish.like
 
                 if (dish.like) {
-                    likeStorage.addLikedItem(dish)
+                    likeRepository.addLikedItem(dish)
                 } else {
-                    likeStorage.removeLikedItem(dish)
+                    likeRepository.removeLikedItem(dish)
                     onItemClick?.invoke()
                 }
                 updateIcon()

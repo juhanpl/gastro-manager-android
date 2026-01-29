@@ -5,11 +5,13 @@ import android.text.Editable
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
@@ -21,6 +23,8 @@ import com.example.dishmanager.models.Category
 import com.example.dishmanager.models.Dish
 import com.example.dishmanager.repository.CategoryRepository
 import com.example.dishmanager.repository.DishRepository
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -30,27 +34,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var dishes: List<Dish> = emptyList()
-        val dishRepository = DishRepository()
-        val categoryRepository = CategoryRepository()
+        val dishRepository = DishRepository(this)
+        val categoryRepository = CategoryRepository(this)
 
-        val txtSearch = findViewById<EditText>(R.id.txtSearch)
-        val spinner = findViewById<Spinner>(R.id.cbCategory)
-
-
+        val txtSearch = findViewById<TextInputEditText>(R.id.txtSearch)
+        val spinner = findViewById<AutoCompleteTextView>(R.id.cbCategory)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val adapter = DishAdapter(this, emptyList(), null)
 
         fun verifyFavorites() {
 
-            val selectedCategory = spinner.selectedItem.toString()
-
+            val selectedCategory = spinner.text.toString()
             if (selectedCategory == "Favorite") {
-
                 adapter.getLikedDishes()
-
             }
-
 
         }
 
@@ -59,67 +57,53 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-
-
-
-
+        spinner.setDropDownBackgroundDrawable(
+            ContextCompat.getDrawable(this, R.drawable.dropdown_background)
+        )
 
         lifecycleScope.launch {
 
             val categories = categoryRepository.getCategories()
             val spinnerAdapter = ArrayAdapter(
                 this@MainActivity,
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.item_spinner,
                 categories
                 )
-            spinner.adapter = spinnerAdapter
+            spinner.setAdapter(spinnerAdapter)
+            spinner.setText("All", false)
 
             dishes = dishRepository.getDishes()
             adapter.updateData(dishes)
 
         }
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+        spinner.setOnItemClickListener { parent, _, position, _ ->
 
-                val selectedCategory = parent.getItemAtPosition(position) as String
+            val selectedCategory = spinner.adapter.getItem(position).toString()
+            spinner.setText(selectedCategory, false)
 
-                if (selectedCategory == "Select...") {
+            if (selectedCategory == "All") {
 
-                    adapter.updateData(dishes)
+                adapter.updateData(dishes)
 
-                } else if (selectedCategory == "Favorite") {
+            } else if (selectedCategory == "Favorite") {
 
-                    adapter.getLikedDishes()
+                adapter.getLikedDishes()
 
+            } else {
 
-                } else {
+                val searchedCategory = dishes.filter { dish -> dish.category == selectedCategory}
+                adapter.updateData(searchedCategory)
 
-                    val searchedCategory = dishes.filter { dish -> dish.category == selectedCategory}
-                    adapter.updateData(searchedCategory)
-
-                }
-
-
-
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
         }
 
         txtSearch.doOnTextChanged { text, start, before, count ->
 
-            val selectedCategory = spinner.selectedItem.toString()
+            val selectedCategory = spinner.text.toString()
 
-            if (selectedCategory == "Select...") {
+            if (selectedCategory == "All") {
 
                 val searchedDishes = dishes.filter { dish -> dish.dishName.contains(text.toString(), ignoreCase = true)}
                 adapter.updateData(searchedDishes)
@@ -140,12 +124,8 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-
-
         }
 
-
     }
-
 
 }

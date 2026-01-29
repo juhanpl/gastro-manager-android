@@ -1,12 +1,11 @@
-package com.example.dishmanager
+package com.example.dishmanager.repository
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.dishmanager.models.Dish
 import org.json.JSONArray
 import org.json.JSONObject
 
-class LikeStorage(private val context: Context) {
+class LikeRepository(private val context: Context) {
 
 
     private val sharedPref = context.getSharedPreferences("favorites", Context.MODE_PRIVATE)

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ug0PN+sivJM=",
+  "dgSpecHash": "TKV4q4UvIiw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Aprendiz\\source\\repos\\GswSupplies_WebAPI\\GswSupplies_WebAPI\\GswSupplies_WebAPI.csproj",
+  "projectFilePath": "C:\\Users\\Aprendiz\\AndroidStudioProjects\\DishManager\\GswSupplies_WebAPI\\GswSupplies_WebAPI\\GswSupplies_WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Aprendiz\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Aprendiz\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
