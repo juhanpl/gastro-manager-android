@@ -1,32 +1,43 @@
-# **gastro-manager-android**
+# gastro-manager-android 🍽️
 
-Este repositorio es una aplicación móvil desarrollada en Kotlin que permite la visualización y gestión de un catálogo gastronómico. La app permite a los usuarios explorar platos, ver detalles técnicos como tiempos de cocción e ingredientes, y filtrar el menú de manera eficiente.
+**gastro-manager-android** is a mobile application developed in **Kotlin** designed for the visualization and management of a gastronomic catalog. The app allows users to explore dishes, view technical details such as cooking times and ingredients, and filter the menu efficiently.
 
 ---
 
-## Instalación y Ejecución
+## Installation and Execution
 
-Sigue estos pasos para configurar el entorno de desarrollo y correr la aplicación:
+Follow these steps to set up the development environment and run the application:
 
-### 1. Requisitos Previos
+### 1. Prerequisites
 
-- **Android Studio:** Jellyfish o superior (recomendado).
-- **JDK:** Versión 17 o superior.
-- **Android SDK:** API 24 (Android 7.0 Nougat) como mínimo.
+- **Android Studio:** Jellyfish or higher (recommended).
+- **JDK:** Version 17 or higher.
+- **Android SDK:** API 24 (Android 7.0 Nougat) minimum.
 
-### 2. Clonar el Repositorio
+### 2. Clone the Repository
 
-Abre tu terminal y ejecuta:
+Open your terminal and run the following command:
 
 ```bash
 git clone https://github.com/juhanpl/gastro-manager-android.git
 ```
 
-**Tecnologías Utilizadas**
+### 3. Execution
 
-- **Lenguaje:** [Kotlin](https://kotlinlang.org/)
-- **Plataforma:** Android SDK (Mínimo API 24+)
-- **Persistencia de Datos:** Gestión de datos mediante archivos JSON y Repositorios.
-- **Componentes de UI:** - `ConstraintLayout` para diseños complejos.
-    - `CardView` y `RecyclerView`.
-    - `Vector Drawables` (SVG) para iconos escalables.
+1. Open **Android Studio**.
+2. Import the project from the folder where you cloned the repository.
+3. Wait for the indexing and **Gradle** synchronization to finish.
+4. Connect a physical device or start an emulator.
+5. Click the **Run** button (green "Play" icon) or press Shift + F10.
+
+---
+
+## 🛠️ Technologies Used
+
+- **Language:** Kotlin
+- **Platform:** Android SDK (Minimum API 24+)
+- **Data Persistence:** Data management via JSON files and the Repository pattern.
+- **UI Components:**
+    - `ConstraintLayout` for complex and responsive designs.
+    - `CardView` and `RecyclerView` for efficient list management.
+    - `Vector Drawables` (SVG) for high-resolution scalable icons.
